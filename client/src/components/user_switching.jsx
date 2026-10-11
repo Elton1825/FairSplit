@@ -20,6 +20,10 @@ function UserSwitching(props) {
 
   return (
     <section className="user-switching-container">
+      <svg className="user-switching-icon" viewBox="0 0 24 24" aria-hidden="true">
+        <circle cx="12" cy="8" r="4" fill="currentColor" />
+        <path d="M4 21v-2a8 8 0 0 1 16 0v2H4Z" fill="currentColor" />
+      </svg>
       <select name="users" ref={selectRef} onChange={handleChange}>
         {group.users.map((user) => (
           <option key={user.username}>{user.username}</option>

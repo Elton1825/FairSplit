@@ -17,7 +17,7 @@ function GroupUsers(props) {
   // State for dynamic styling - fading message in and out
   let [msgClasses, setMsgClasses] = useState("group-members-msg");
   let [togglePosition, setTogglePosition] = useState("0.3em");
-  let [toggleColour, setToggleColour] = useState("rgb(201, 61, 61, 0.65)");
+  let [toggleColour, setToggleColour] = useState("#FFFFFF");
 
   // Ref to user select for settling
   let userSelectRef = createRef();
@@ -26,10 +26,11 @@ function GroupUsers(props) {
   function disabledBtnStyles() {
     if (btnDisabled) {
       return {
-        backgroundColor: "lightgrey",
-        boxShadow: "0 5px 0 grey",
+        backgroundColor: "#F1F5F9",
+        border: "1px solid #E2E8F0",
+        color: "#94A3B8",
+        boxShadow: "none",
         transform: "none",
-        opacity: "20%",
       };
     }
   }
@@ -88,24 +89,40 @@ function GroupUsers(props) {
       indebted: false,
       balance: 0,
     };
-    props.onClick(newUser);
+    return props.onClick(newUser);
   }
 
   // Changes inline styles of smart split toggle
   function toggleSmartSplit() {
     if (togglePosition === "0.3em") {
       setTogglePosition("1.7em");
-      setToggleColour("rgb(61, 201, 112, 0.65)");
+      setToggleColour("#FFFFFF");
       props.onClick(true);
     } else {
       setTogglePosition("0.3em");
-      setToggleColour("rgb(201, 61, 61, 0.65)");
+      setToggleColour("#FFFFFF");
       props.onClick(false);
     }
   }
 
   return (
     <div className="group-members-container">
+      <div className="members-card-header">
+        <div className="members-heading-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24">
+            <circle cx="9" cy="8" r="3" fill="currentColor" />
+            <circle cx="17" cy="9" r="2.5" fill="currentColor" />
+            <path
+              d="M3.5 19v-1a5.5 5.5 0 0 1 11 0v1h-11Zm11 0v-1a5 5 0 0 1 6 0v1h-6Z"
+              fill="currentColor"
+            />
+          </svg>
+        </div>
+        <div>
+          <h1 className="group-members-title">Group Members</h1>
+          <p className="members-card-subtitle">Manage group members and settle balances</p>
+        </div>
+      </div>
       <div className="toggle-container">
         <div className="info-div">
           i
@@ -123,7 +140,14 @@ function GroupUsers(props) {
           </div>
         </div>
         <div>
-          <div className="split-toggle" onClick={toggleSmartSplit}>
+          <div
+            className="split-toggle"
+            onClick={toggleSmartSplit}
+            style={{
+              backgroundColor:
+                togglePosition === "0.3em" ? "#CBD5E1" : "#2563EB",
+            }}
+          >
             <div
               className="circle-toggle"
               style={{
@@ -135,9 +159,14 @@ function GroupUsers(props) {
           <p className="toggle-header">Smart Split </p>
         </div>
       </div>
-      <h1 className="group-members-title">Group Members</h1>
       <p className={msgClasses}>{responseMsg}</p>
       <div className="users-container">
+        <div className="members-balances-header">
+          <div>
+            <h2>Members &amp; Balances</h2>
+            <p>Current balances for each member</p>
+          </div>
+        </div>
         <div className="settle-container">
           <div>
             <select ref={userSelectRef} name="users">
@@ -194,14 +223,18 @@ function GroupUsers(props) {
               ></User>
             </CSSTransition>
           ))}
-          <CSSTransition key={"add-user"} timeout={50}>
-            <AddUser
-              onClick={(user) => {
-                addUserToGroup(user);
-              }}
-            ></AddUser>
-          </CSSTransition>{" "}
         </TransitionGroup>
+        <div className="member-add-panel">
+          <div className="member-add-heading">
+            <h2>Add Member</h2>
+            <p>Add a new member to your group</p>
+          </div>
+          <AddUser
+            onClick={(user) => {
+              addUserToGroup(user);
+            }}
+          ></AddUser>
+        </div>
       </div>
     </div>
   );

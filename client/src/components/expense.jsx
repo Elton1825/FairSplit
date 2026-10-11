@@ -40,43 +40,62 @@ function Expense(props) {
     }
   }
 
+  function getStateLabel() {
+    if (props.value.lender === props.activeUser) {
+      return "You lent";
+    }
+
+    const isBorrower = props.value.borrowers.some(
+      (borrower) => borrower[0] === props.activeUser,
+    );
+
+    return isBorrower ? "You borrowed" : "Shared";
+  }
+
   return (
     <div onClick={expandContainer}>
       <div className="expense">
-        <div className="e-date">
-          {props.value.creationDatetime.substring(0, 10)}
-        </div>
         <div className="e-pic"></div>
-        <div className="e-title">{props.value.title}</div>
-        <div className="e-member-price">
-          <div className="e-price">
-            £{(props.value.amount / 100).toFixed(2)}
-          </div>
-          <div className="e-members">
-            <div>{props.value.lender}</div>
-            <img alt="arrow" className="e-arrow" src={smallArrow}></img>
+        <div className="e-details">
+          <div className="e-title">{props.value.title}</div>
+          <div
+            className="e-meta"
+          >
+            <div className="e-date">
+              {props.value.creationDatetime.substring(0, 10)}
+            </div>
             <div
-              onMouseEnter={checkTextOverflow}
-              onMouseLeave={() => setTextOverflow(0)}
-              style={{
-                overflow: "hidden",
-                whiteSpace: "nowrap",
-                textOverflow: "ellipsis",
-              }}
+              className={`e-members ${
+                getStateLabel() === "You borrowed"
+                  ? "e-members-borrowed"
+                  : getStateLabel() === "You lent"
+                    ? "e-members-lent"
+                    : "e-members-shared"
+              }`}
             >
-              {renderBorrowers()}
+              <div>{getStateLabel()}</div>
+              <img alt="arrow" className="e-arrow" src={smallArrow}></img>
+              <div
+                onMouseEnter={checkTextOverflow}
+                onMouseLeave={() => setTextOverflow(0)}
+                style={{
+                  overflow: "hidden",
+                  whiteSpace: "nowrap",
+                  textOverflow: "ellipsis",
+                }}
+              >
+                {renderBorrowers()}
+              </div>
             </div>
           </div>
         </div>
+        <div className="e-price">£{(props.value.amount / 100).toFixed(2)}</div>
         <div
+          className="expense-expand-trigger"
           style={{
             justifySelf: "center",
-            backgroundColor: "lightgrey",
-            borderRadius: "5px",
-            width: "1em",
-            height: "1.2em",
-            padding: "0.1em",
           }}
+          aria-label="Toggle expense details"
         >
           <img
             style={{
@@ -118,7 +137,7 @@ function Expense(props) {
                 style={{
                   width: "auto",
                   margin: "0.3em",
-                  backgroundColor: "lightgrey",
+                  backgroundColor: "#F1F5F9",
                 }}
               >
                 {borrower[0]}

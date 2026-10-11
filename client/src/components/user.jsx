@@ -19,18 +19,18 @@ function User(props) {
 
   return (
     <div className="user-container">
-      <div className="user-pic"></div>
+      <div className="user-pic">
+        {(props.user.username || props.user.firstName || "User")
+          .charAt(0)
+          .toUpperCase()}
+      </div>
       <div className="user-username">{props.user.username}</div>
       <div className="user-balance-container">
         <div
-          style={{
-            backgroundColor:
-              checkIndebtedness(props.user)[0].toFixed(2) === "0.00"
-                ? "lightgrey"
-                : "",
-          }}
           className={
-            checkIndebtedness(props.user)[1]
+            checkIndebtedness(props.user)[0].toFixed(2) === "0.00"
+              ? "balance-value balance-neutral"
+              : checkIndebtedness(props.user)[1]
               ? "balance-value user-balance-green"
               : "balance-value user-balance-red"
           }

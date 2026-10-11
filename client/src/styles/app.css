@@ -1,20 +1,76 @@
-@import url("https://fonts.googleapis.com/css2?family=Dongle:wght@700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap");
 
-.App {
-  display: grid;
-  grid-template-rows: [top] 100px [center] auto;
-  height: 100%;
-  width: 100%;
+* {
+  box-sizing: border-box;
 }
 
-.main-content-container {
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: #f8fafc;
+  color: #0f172a;
+  font-family: "Inter", sans-serif;
+}
+
+.App {
+  min-height: 100vh;
+  width: 100%;
+  padding: 28px 0 40px;
+  background: #f8fafc;
+}
+
+.header-container {
+  width: min(calc(100% - 240px), 1440px);
+  margin: 0 auto 24px;
   display: flex;
-  justify-content: space-evenly;
+  justify-content: flex-start;
   align-items: center;
 }
 
 .title {
-  margin: auto auto auto 190px;
+  margin: 0;
+  font-family: "Inter", sans-serif;
+  font-size: 27px;
+  line-height: 1.1;
+  letter-spacing: -0.04em;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.title-fair {
+  color: #0f172a;
+}
+
+.title-split {
+  color: #2563eb;
+}
+
+.main-content-container {
+  width: min(calc(100% - 48px), 1440px);
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+@media (max-width: 767px) {
+  .App {
+    padding-top: 24px;
+  }
+
+  .header-container {
+    width: calc(100% - 40px);
+    margin-bottom: 20px;
+  }
+
+  .main-content-container {
+    width: calc(100% - 32px);
+  }
 }
 
 .arrow {
@@ -36,13 +92,62 @@
   background-color: #3dc970;
   color: white;
   font-size: 16px;
-  font-family: "Poppins", sans-serif;
+  font-family: "Inter", sans-serif;
 }
 
-.header-container {
+.dashboard-app {
+  padding: 0 0 40px;
+}
+
+.dashboard-header {
   width: 100%;
-  justify-content: space-between;
+  height: 80px;
+  background: #ffffff;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.dashboard-header-inner {
+  width: min(calc(100% - 48px), 1240px);
+  height: 100%;
+  margin: 0 auto;
   display: flex;
-  font-family: "Dongle", sans-serif;
-  font-size: 30px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.dashboard-header .title {
+  font-size: 28px;
+  letter-spacing: -0.04em;
+  white-space: nowrap;
+}
+
+.dashboard-content {
+  width: min(calc(100% - 48px), 1240px);
+  display: grid;
+  grid-template-columns: minmax(0, 1.43fr) minmax(0, 1fr);
+  gap: 24px;
+  align-items: stretch;
+  margin: 24px auto 0;
+}
+
+@media (max-width: 900px) {
+  .dashboard-content {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 767px) {
+  .dashboard-header-inner,
+  .dashboard-content {
+    width: calc(100% - 32px);
+  }
+
+  .dashboard-header-inner {
+    gap: 12px;
+  }
+
+  .dashboard-header .title {
+    font-size: 24px;
+  }
 }

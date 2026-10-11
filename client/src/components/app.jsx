@@ -148,7 +148,7 @@ function App() {
     const createdUser = await response.json();
     if (!response.ok) {
       console.error(createdUser.error);
-      return;
+      return false;
     }
 
     const users = [...group.users, createdUser];
@@ -166,6 +166,7 @@ function App() {
         users: usersMinusActive,
       },
     });
+    return true;
   }
 
   // Update group state after a user settles up
@@ -216,7 +217,10 @@ function App() {
     return (
       <div className="App">
         <div className="header-container">
-          <h1 className="title">FairSplit</h1>
+          <h1 className="title">
+            <span className="title-fair">Fair</span>
+            <span className="title-split">Split</span>
+          </h1>
         </div>
       </div>
     );
@@ -226,44 +230,48 @@ function App() {
     return (
       <div className="App">
         <div className="header-container">
-          <h1 className="title">FairSplit</h1>
+          <h1 className="title">
+            <span className="title-fair">Fair</span>
+            <span className="title-split">Split</span>
+          </h1>
         </div>
         <div className="main-content-container">
-          <div className="group-members-container">
-            <h1 className="group-members-title">Group Members</h1>
-            <div className="users-container">
-              <AddUser
-                onClick={(username) => {
-                  updateGroup({
-                    username: username,
-                    firstName: "Cosmo",
-                    lastName: "Kramer",
-                    indebted: false,
-                    balance: 0,
-                  });
-                }}
-              ></AddUser>
-            </div>
-          </div>
+          <AddUser
+            variant="empty"
+            onClick={(username) => {
+              return updateGroup({
+                username: username,
+                firstName: "Cosmo",
+                lastName: "Kramer",
+                indebted: false,
+                balance: 0,
+              });
+            }}
+          ></AddUser>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="App">
-      <div className="header-container">
-        <h1 className="title">FairSplit</h1>
-        <UserSwitching group={group} onClick={changeActiveUser}></UserSwitching>
-      </div>
-      <div className="main-content-container">
+    <div className="App dashboard-app">
+      <header className="dashboard-header">
+        <div className="dashboard-header-inner">
+          <h1 className="title" aria-label="FairSplit">
+            <span className="title-fair">Fair</span>
+            <span className="title-split">Split</span>
+          </h1>
+          <UserSwitching group={group} onClick={changeActiveUser}></UserSwitching>
+        </div>
+      </header>
+      <div className="main-content-container dashboard-content">
         <GroupExpenses group={group} onClick={updateDebts}></GroupExpenses>
         <GroupUsers
           group={group}
           // Call function based on parameter passed in onClick call
           onClick={(param) => {
             if (param.firstName) {
-              updateGroup(param);
+              return updateGroup(param);
             } else if (param === true || param === false) {
               updateOptimisedDebts(param);
             } else {

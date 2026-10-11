@@ -44,17 +44,13 @@ function AddExpense(props) {
 
   // Calculates height to transition to when borrower is added / removed
   function calcHeight() {
-    if (
-      overflowClass.includes("overflow-container-expand") &&
-      borrowers.length > 0
-    ) {
-      let calc = borrowers.length * 2.5 + 11;
-      return calc + "em";
-    } else if (overflowClass.includes("overflow-container-expand")) {
-      return "9.8em";
-    } else {
+    if (!overflowClass.includes("overflow-container-expand")) {
       return "0em";
     }
+
+    const columns = window.innerWidth <= 620 ? 1 : 2;
+    const rows = Math.ceil((4 + borrowers.length) / columns);
+    return `${rows * 5.5 + 2}em`;
   }
 
   // Renders another borrower input
@@ -214,16 +210,30 @@ function AddExpense(props) {
   function disabledBtnStyles() {
     if (btnDisabled) {
       return {
-        backgroundColor: "lightgrey",
-        boxShadow: "0 5px 0 grey",
+        backgroundColor: "#F1F5F9",
+        border: "1px solid #E2E8F0",
+        color: "#94A3B8",
+        boxShadow: "none",
         transform: "none",
-        opacity: "20%",
       };
     }
   }
 
+  const lenderUsername = lenderRef.current
+    ? lenderRef.current.value
+    : activeLender;
+
   return (
-    <div>
+    <section className="add-expense-panel">
+      <div className="add-expense-panel-header">
+        <div className="add-expense-panel-icon" aria-hidden="true">
+          +
+        </div>
+        <div>
+          <h3>Add Expense</h3>
+          <p>Enter the expense details and select cost</p>
+        </div>
+      </div>
       <div
         style={{
           maxHeight: calcHeight(),
@@ -289,7 +299,7 @@ function AddExpense(props) {
             >
               <option>--- Select a user ---</option>
               {props.usersMinusActive.users
-                .filter((user) => user.username !== lenderRef.current.value)
+                .filter((user) => user.username !== lenderUsername)
                 .map((user) => (
                   <option key={user.username}>{user.username}</option>
                 ))}
@@ -336,7 +346,7 @@ function AddExpense(props) {
                     <option>--- Select a user ---</option>
                     {props.usersMinusActive.users
                       .filter(
-                        (user) => user.username !== lenderRef.current.value
+                        (user) => user.username !== lenderUsername
                       )
                       .map((user) => (
                         <option key={user.username}>{user.username}</option>
@@ -409,7 +419,7 @@ function AddExpense(props) {
           </button>
         </div>
       </div>
-    </div>
+    </section>
   );
 }
 
